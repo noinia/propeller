@@ -1,0 +1,77 @@
+#+STARTUP: showeverything
+
+
+* Three main components
+** Item
+the thing that we want to perform an action on.
+
+
+** Action
+the actual action we perform
+
+** Parameter
+
+Parameter to the action (e.g. for the action 'open' the parameter
+would be the application to open with)
+
+* Searching
+
+We select the item by some data structure for string searching,
+i.e. every item is a weighted string. The weight represents the
+priority; i.e some items are more important than others (i.e. weights
+can be number of times someone has chosen this action before)
+
+We implement this using some sort of compressed suffix trie. Given a query
+pattern we search for the items matching this substring. The result
+will be a subtree. From this subtree we wish to select the k maximum
+weight items (in decreasing weight order).
+
+** Finding the max-weights
+
+For a single maximum this should be fairly easy; just store subtree
+maxima's (i.e. which leaf has the max weight).
+
+For top-k that may be a bit more difficult though.
+
+** TODO Narrowing
+
+It would be nice if we can do some sort of narrowing. (i.e. searching
+with multiple successive patterns).
+
+Not sure if we support this; the subtree then also has to be some sort
+of "proper suffix tree".
+
+** Suffix tries with multiple strings
+
+Add a marker $_i after every individual string; ignore suffixes
+spanning a $_i marker
+
+** Data structure implementation
+
+Some candiates:
+
+*** use wavelet trees?
+
+advantage would be that they are succinct
+
+https://arxiv.org/pdf/1204.3581.pdf
+
+*** or just compressed-tries
+
+just represent each node by a BST
+
+
+** Inserting new strings
+
+Just append them to the text; the wavelet trees and tries support this
+
+** Deletions
+
+I'm hoping we can do them lazily; i.e. just keep them in; rebuild the
+DS from scratch once half the DS is deleted.
+
+*** TODO Figure out what to do for the priorities to make this work
+
+For a single max-query we can simply set the weight of that string to
+-\infty. (thus deleting in length(string) time). Not sure about the
+top-k part.

@@ -33,6 +33,25 @@ maxima's (i.e. which leaf has the max weight).
 
 For top-k that may be a bit more difficult though.
 
+*** top-k
+
+maybe something like: maintain the leaves in a separate DS, ordered by in-order
+traversal of the suffix trie; selecting a subtree then selects a
+consecutive interval of these nodes. Hence, if our separate DS is a
+priority search tree we can easily update/query the weights?
+
+
+Actually, I guess we can use range-maxim queries: every subtree node
+would store the min leaf-num l and max-leaf num r. Then the spearte DS
+(corresp. to the in-order traversal) would store a RMQ data
+structure. To report top-k; find the max at i in [l,r], then recursively find max
+among [l,i-1] and [i+1,r]. This is basically the document-retrieval solution.
+
+
+I wonder if we can do dynamic (insert/increase-maxim-only?) RMQ in
+O(1) time.
+
+
 ** TODO Narrowing
 
 It would be nice if we can do some sort of narrowing. (i.e. searching

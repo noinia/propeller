@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import qualified Propeller.Main as Propeller
 
 main :: IO ()
-main = someFunc
+main = Propeller.main

@@ -60,18 +60,97 @@ https://arxiv.org/pdf/1204.3581.pdf
 
 just represent each node by a BST
 
+** Updates
+*** Updates in the priories
 
-** Inserting new strings
+Should be doable in "length of the string" time or so, since the
+string DS itself does not change.
+
+*** Inserting new strings
 
 Just append them to the text; the wavelet trees and tries support this
 
-** Deletions
+*** Deletions
 
 I'm hoping we can do them lazily; i.e. just keep them in; rebuild the
 DS from scratch once half the DS is deleted.
 
-*** TODO Figure out what to do for the priorities to make this work
+**** TODO Figure out what to do for the priorities to make this work
 
 For a single max-query we can simply set the weight of that string to
 -\infty. (thus deleting in length(string) time). Not sure about the
 top-k part.
+
+
+* Searching among actions and parameters
+
+Actions and parameters both also have a weight, and we want the
+max-weight one(s). We should probably use the same DS for the actions
+and parameters, since these are also selected using string searches.
+
+There is some relation between the three things though. An item should
+ideally learn what the max-priority action is that corresponds with
+this item.
+
+* TODO make sure that our database/data structure gets stored on disk
+
+it needs to persist.
+
+So use binary or serial or so to serialize it?
+
+** TODO How do we deal with versioning?
+
+I guess using safecopy?
+
+** TODO Figure out if there are IO/efficient suffix trees or so
+
+* TODO Figuring out what and how to catalog
+** TODO how do we get items
+
+We want access to:
+
+- files (in some subdirectories) (maybe reusing some sort of existing database
+  (locate?))
+- considering connected devices/mounted volumes
+- applications
+
+- maybe even searching for words inside documents?
+
+
+** TODO actions
+
+- open applications
+- ejecting/unmonting volumes
+
+** TODO parameters
+
+- open with certain application
+
+* Interface
+
+Maybe we should start with some command line tool to get started. But
+it should really have a GUI interface
+
+** TODO Select some GUI framework
+It should have some sort of tray icon thing
+
+* General application design
+
+I think I want to try using freer-monads to organize the main
+thing. Probably using the polysemi package.
+
+Some general effects that we will need
+
+** TODO persistent DS access/updates
+** TODO logging
+** TODO GUI stuff?
+We want something native. Candiates:
+
+- fltk
+- the declarative gtk thing
+- some qt package?
+
+* TODO Testing
+
+figure out what we actually want to test/how to set that up. Probably
+using hspec and quickcheck
